@@ -1,0 +1,83 @@
+<template>
+  <v-container fill-height fluid class="grey lighten-5">
+    <v-row row class="text-xs-center" align="center" justify="center">
+      <v-col cols="12" sm="4">
+        <v-card flat>
+          <v-card-title primary-title>
+            <h4>Login</h4>
+          </v-card-title>
+          <v-form>
+            <v-text-field
+              prepend-icon="mdi-account"
+              v-model="user.email"
+              label="Mail"
+              ref="email"
+            >
+            </v-text-field>
+            <v-text-field
+            prepend-icon="mdi-lock"
+            v-model="user.password"
+            label="Password"
+            type="password"
+            ></v-text-field>
+            <v-card-action>
+                <v-btn primary large block @click="login">Login</v-btn>
+            </v-card-action>
+          </v-form>
+        </v-card>
+      </v-col>
+    </v-row>
+  </v-container>
+</template>
+
+<script>
+import User from '@/models/User';
+export default {
+    name:"LoginCompo",
+    data() {
+        return {
+            user : new User ('',''),
+            successful: false,
+        }
+    },
+
+    computed:{
+        loggedIn(){
+            return this.$store.state.auth.status.loggedIn;
+        }
+    },
+     
+    //Con este life hooks si el usuario esta logeado lo envia al home 
+    created(){
+        if (this.loggedIn){
+            this.$router.push('/')
+        }
+    },
+
+    mounted(){
+        this.$refs.email.focus()
+    },
+    methods:{
+        login(){
+           if(this.user.email && this.user.password){
+               this.$store.dispatch("auth/login", this.user)
+               .then(()=>{
+                   this.$router.push('/');
+               },
+               err=>{
+                   console.log(err)
+               }
+               
+               )
+           }
+       // console.log(this.user)
+        }
+    }
+
+
+
+
+};
+</script>
+
+<style lang="scss" scoped></style>
