@@ -24,9 +24,12 @@
                 <v-btn primary large block @click="login">Login</v-btn>
             </v-card-action>
           </v-form>
+         <v-snackbar :timeout='timeout' v-model="snackbar">{{message}}</v-snackbar>
+          
         </v-card>
       </v-col>
     </v-row>
+    
   </v-container>
 </template>
 
@@ -38,6 +41,10 @@ export default {
         return {
             user : new User ('',''),
             successful: false,
+            message:'',
+            snackbar : false,
+            timeout: 2000
+            
         }
     },
 
@@ -52,6 +59,7 @@ export default {
         if (this.loggedIn){
             this.$router.push('/')
         }
+       
     },
 
     mounted(){
@@ -65,13 +73,27 @@ export default {
                    this.$router.push('/');
                },
                err=>{
-                   console.log(err)
+                   
+                   this.message = (err.response.data.msg);
+                   this.snackbar= true;
+                   this.user.email='';
+                   this.user.password='';
+                  // this.dialog=true
+                   
+                  // const {msg} = this.message
+                   console.log(this.message)
                }
                
                )
            }
-       // console.log(this.user)
-        }
+       
+        },
+
+        // refreshPage(){
+        //   setTimeout(()=>{
+        //     this.$forceUpdate()
+        //   },2000)
+        // }
     }
 
 
