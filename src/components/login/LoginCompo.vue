@@ -20,11 +20,11 @@
             label="Password"
             type="password"
             ></v-text-field>
-            <v-card-action>
+            <v-card-actions>
                 <v-btn primary large block @click="login">Login</v-btn>
-            </v-card-action>
+            </v-card-actions>
           </v-form>
-         <v-snackbar :timeout='timeout' v-model="snackbar">{{message}}</v-snackbar>
+         <v-snackbar :timeout='timeout' rounded="pill" center v-model="snackbar">{{message}}</v-snackbar>
           
         </v-card>
       </v-col>
@@ -43,7 +43,7 @@ export default {
             successful: false,
             message:'',
             snackbar : false,
-            timeout: 2000
+            timeout: 3000
             
         }
     },
