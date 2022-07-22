@@ -17,7 +17,7 @@
 
       <v-spacer></v-spacer>
 
-      <v-btn
+      <v-btn v-if="loggedIn"
          text
          @click="logout()"
       >
@@ -35,7 +35,13 @@
              this.$store.dispatch('auth/logout')
              this.$router.push('/login')
          }
-     }
+     },
+
+      computed:{
+        loggedIn(){
+            return this.$store.state.auth.status.loggedIn;
+        }
+    },
         
     }
 </script>
