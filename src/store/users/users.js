@@ -14,7 +14,7 @@ export default{
     },
     actions:{
         getAllUsers(context){
-            axios.get(process.env.VUE_APP_SERVER_URL + '/users/all')
+            axios.get(process.env.VUE_APP_SERVER_URL + 'users/all')
             .then((data)=>{
                 context.commit("USERS", data.data)
             })

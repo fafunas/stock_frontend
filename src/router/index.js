@@ -14,6 +14,11 @@ const routes = [
     path:'/login',
     name: 'Login',
     component:()=> import('../components/login/LoginCompo.vue')
+  },
+  {
+    path:'/panel',
+    name: 'UserPanel',
+    component:()=> import('../views/UserABM.vue')
   }
 ]
 

@@ -28,12 +28,13 @@
           :key="item.title"
           link
         >
-          <v-list-item-icon>
+          <v-list-item-icon class="mr-2">
             <v-icon>{{ item.icon }}</v-icon>
           </v-list-item-icon>
 
           <v-list-item-content>
-            <v-list-item-title>{{ item.title }}</v-list-item-title>
+            
+            <router-link :to= 'item.path'>{{ item.title }}</router-link>
           </v-list-item-content>
         </v-list-item>
       </v-list>
@@ -47,11 +48,11 @@
     data () {
       return {
         items: [
-          { title: 'Ingreso', icon: 'mdi-home-import-outline'},
-          { title: 'Egreso', icon: 'mdi-home-export-outline'},
-          { title: 'Traspaso', icon: 'mdi-home-switch' },
-          {title:'Productos', icon: 'mdi-alpha-p-circle-outline'},
-          {title: 'Usuarios', icon: 'mdi-account'}
+          { title: 'Ingreso', icon: 'mdi-home-import-outline', path:'/ingreso'},
+          { title: 'Egreso', icon: 'mdi-home-export-outline', path:'/egreso'},
+          { title: 'Traspaso', icon: 'mdi-home-switch', path:'/traspaso' },
+          {title:'Productos', icon: 'mdi-alpha-p-circle-outline', path:'/productos'},
+          {title: 'Usuarios', icon: 'mdi-account', path:'/panel'}
         ],
         right: null,
       }
@@ -61,5 +62,16 @@
 
 
 <style scoped>
+a:link{
+  text-decoration: none;
+  color: black;
+}
+
+a{
+  text-decoration: none;
+  color: black !important;
+  
+}
+
 
 </style>
