@@ -1,15 +1,25 @@
 <template>
-  <hello-world />
+  <div>
+    <v-row>
+      <v-col cols="2"> <SideBar class="sidebar" /></v-col>
+      <v-col cols="10"><User/></v-col>
+    </v-row>
+  </div>
 </template>
 
 <script>
-  import HelloWorld from '../components/HelloWorld'
+import SideBar from "../components/SideBar.vue";
+import User from "../components/user/UserAbm.vue"
 
-  export default {
-    name: 'HomeView',
+export default {
+  name: "HomeView",
 
-    components: {
-      HelloWorld,
-    },
-  }
+  components: { SideBar, User },
+};
 </script>
+
+<style scoped>
+.sidebar {
+  padding: 0;
+}
+</style>
