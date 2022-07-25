@@ -3,6 +3,7 @@
       app
       color="primary"
       dark
+      fixed
     >
       <div class="d-flex align-center">
         <v-img
