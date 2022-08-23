@@ -7,13 +7,13 @@
   >
     <template v-slot:top>
       <v-toolbar flat>
-        <v-toolbar-title>User Panel</v-toolbar-title>
+        <v-toolbar-title>Product Panel</v-toolbar-title>
         <v-divider class="mx-4" inset vertical></v-divider>
         <v-spacer></v-spacer>
         <v-dialog v-model="dialog" max-width="500px">
           <template v-slot:activator="{ on, attrs }">
             <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">
-              Nuevo Usuario
+              Nuevo Articulo
             </v-btn>
           </template>
           <v-card>
@@ -25,48 +25,49 @@
               <v-container>
                 <v-row>
                   <v-col cols="12" sm="6" md="4">
-                    <v-text-field
-                      v-model="editedItem.name"
-                      label="Nombre"
-                    ></v-text-field>
+                  
+                    <v-select
+                    label="Grupo"
+                    v-model="editedItem.group"
+                    :items="groupsGetter"
+                    item-value = "id"
+                    item-text = "cod"
+                    return-object
+                    >
+                    </v-select>
                   </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field
-                      v-model="editedItem.surname"
-                      label="Apellido"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field
-                      v-model="editedItem.dni"
-                      label="DNI"
-                      type="number"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col v-if="newOrEdit" cols="12" sm="6" md="4">
-                    <v-text-field
-                      v-model="editedItem.password"
-                      label="Password"
-                      type="password"
-                      required
-                    ></v-text-field>
-                  </v-col>
-
-                  <v-col v-if="newOrEdit" cols="12" sm="6" md="4">
-                    <v-text-field
-                      v-model="editedItem.email"
-                      label="Email"
-                      type="mail"
-                      required
-                    ></v-text-field>
-                  </v-col>
-
                   <v-col cols="12" sm="6" md="4">
                     <v-select
-                      v-model="editedItem.rol"
-                      :items="roles"
-                      label="Rol"
-                    ></v-select>
+                    label="Tipo"
+                    v-model="editedItem.type"
+                    :items="typesGetter"
+                    item-value = "id"
+                    item-text = "cod"
+                    return-object
+                    >
+                    </v-select>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-text-field
+                      v-model="editedItem.description"
+                      label="Descripcion"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-text-field
+                      v-model="editedItem.stock_min"
+                      label="Stock Minimo"
+                      type="number"
+                      required
+                    ></v-text-field>
+                  </v-col>
+
+                  <v-col v-if="newOrEdit" cols="12" sm="6" md="4">
+                    <v-text-field
+                      v-model="editedItem.stock"
+                      label="Stock"
+                      type="number"
+                      ></v-text-field>
                   </v-col>
                 </v-row>
               </v-container>
@@ -82,7 +83,7 @@
         <v-dialog v-model="dialogDelete" max-width="500px">
           <v-card>
             <v-card-title class="text-h5"
-              >Esta seguro que desea deshabilitar al usuario?</v-card-title
+              >Esta seguro que desea deshabilitar el Producto?</v-card-title
             >
             <v-card-actions>
               <v-spacer></v-spacer>
@@ -109,34 +110,35 @@
 
 <script>
 import axios from "axios";
+import {mapGetters} from 'vuex'
 export default {
   data: () => ({
     dialog: false,
     dialogDelete: false,
     headers: [
       {
-        text: "Nombre",
+        text: "Codigo",
         align: "start",
         sortable: false,
-        value: "name",
+        value: "cod",
       },
-      { text: "Apellido", value: "surname" },
-      { text: "Email", value: "email" },
-      { text: "DNI", value: "dni" },
-      { text: "Rol", value: "rol" },
+      { text: "Grupo", value: "group.cod" },
+      { text: "Tipo", value: "type.cod" },
+      { text: "Descripcion", value: "description" },
+      { text: "Stock Minimo", value: "stock_min" },
+      {text: "Stock Actual", value: "stock"},
       { text: "Actions", value: "actions", sortable: false },
     ],
-    roles:['ADMIN_ROLE', 'USER_ROLE'],
+    //roles:['ADMIN_ROLE', 'USER_ROLE'],
     user: [],
     editedIndex: -1,
     editedItem: {
-      name: "",
-      surname: "",
-      dni: "",
-      rol: "",
-      password: "",
-    email: "",
-    },
+      group: "",
+      type: "",
+      description: "",
+      stock_min: "",
+      stock: "",
+      },
     defaultItem: {
       name: "",
       surname: "",
@@ -147,8 +149,14 @@ export default {
   }),
 
   computed: {
+
+      ...mapGetters({
+      groupsGetter : 'products/group',
+      typesGetter : 'products/types'
+    }),
+
     formTitle() {
-      return this.editedIndex === -1 ? "Nuevo Usuario" : "Editar Usuario";
+      return this.editedIndex === -1 ? "Nuevo Articulo" : "Editar Articulo";
     },
 
     newOrEdit() {
@@ -166,37 +174,40 @@ export default {
   },
 
   mounted() {
-    this.getUsers();
+    this.getProducts();
+    this.$store.dispatch('products/getAllGroups')
+    this.$store.dispatch('products/getAllTypes')
+    console.log('Esto viene del mounted',this.groupGetter)
   },
 
   methods: {
-    getUsers() {
+    getProducts() {
       axios
-        .get(process.env.VUE_APP_SERVER_URL + "users")
+        .get(process.env.VUE_APP_SERVER_URL + "products")
         .then((data) => {
-          this.user = data.data.usuarios; //esto recibo del endpoint
-            //console.table(data.data.usuarios)
-            //console.log(data.data.usuarios)
+          this.user = data.data.productos; //esto recibo del endpoint
+           // console.table(data)
         })
         .catch((err) => {
           console.log(`${err}`);
         });
     },
 
+   
     editItem(item) {
       this.editedIndex = item.uid;
-      this.editedItem.name = item.name;
-      this.editedItem.surname = item.surname;
-      this.editedItem.dni = item.dni;
-      this.editedItem.rol = item.rol;
+      this.editedItem.group = item.group.cod;
+      this.editedItem.type = item.type.cod;
+      this.editedItem.description = item.description;
+      this.editedItem.stock_min = item.stock_min;
       this.dialog = true;
-      //    console.log(item)
+      //   console.log(item)
       //  console.log(this.editedIndex)
     },
 
     deleteItem(item) {
       // this.editedIndex = this.user.indexOf(item);
-      this.editedItem = item.uid;
+      this.editedItem = item.id;
       this.dialogDelete = true;
       //  console.log(this.editedIndex)
       //  console.log(this.editedItem)
@@ -246,11 +257,11 @@ export default {
         console.log(response)
         this.getUsers()
         this.close()
-        console.log(this.editedItem)
+       // console.log(this.editedItem)
       })
       .catch((err)=>{
         console.log(err)
-        console.log(this.editedItem)
+      //  console.log(this.editedItem)
       })
       
     },
