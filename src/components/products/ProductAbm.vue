@@ -158,6 +158,8 @@ export default {
       typesGetter: "products/types",
     }),
 
+    
+
     formTitle() {
       return this.editedIndex === -1 ? "Nuevo Articulo" : "Editar Articulo";
     },
