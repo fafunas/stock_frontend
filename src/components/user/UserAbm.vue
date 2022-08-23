@@ -1,19 +1,19 @@
 <template>
   <v-data-table
     :headers="headers"
-    :items="desserts"
+    :items="user"
     sort-by="calories"
     class="elevation-1"
   >
     <template v-slot:top>
       <v-toolbar flat>
-        <v-toolbar-title>My CRUD</v-toolbar-title>
+        <v-toolbar-title>User Panel</v-toolbar-title>
         <v-divider class="mx-4" inset vertical></v-divider>
         <v-spacer></v-spacer>
         <v-dialog v-model="dialog" max-width="500px">
           <template v-slot:activator="{ on, attrs }">
             <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">
-              New Item
+              Nuevo Usuario
             </v-btn>
           </template>
           <v-card>
@@ -27,32 +27,46 @@
                   <v-col cols="12" sm="6" md="4">
                     <v-text-field
                       v-model="editedItem.name"
-                      label="Dessert name"
+                      label="Nombre"
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="6" md="4">
                     <v-text-field
-                      v-model="editedItem.calories"
-                      label="Calories"
+                      v-model="editedItem.surname"
+                      label="Apellido"
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="6" md="4">
                     <v-text-field
-                      v-model="editedItem.fat"
-                      label="Fat (g)"
+                      v-model="editedItem.dni"
+                      label="DNI"
+                      type="number"
                     ></v-text-field>
                   </v-col>
-                  <v-col cols="12" sm="6" md="4">
+                  <v-col v-if="newOrEdit" cols="12" sm="6" md="4">
                     <v-text-field
-                      v-model="editedItem.carbs"
-                      label="Carbs (g)"
+                      v-model="editedItem.password"
+                      label="Password"
+                      type="password"
+                      required
                     ></v-text-field>
                   </v-col>
-                  <v-col cols="12" sm="6" md="4">
+
+                  <v-col v-if="newOrEdit" cols="12" sm="6" md="4">
                     <v-text-field
-                      v-model="editedItem.protein"
-                      label="Protein (g)"
+                      v-model="editedItem.email"
+                      label="Email"
+                      type="mail"
+                      required
                     ></v-text-field>
+                  </v-col>
+
+                  <v-col cols="12" sm="6" md="4">
+                    <v-select
+                      v-model="editedItem.rol"
+                      :items="roles"
+                      label="Rol"
+                    ></v-select>
                   </v-col>
                 </v-row>
               </v-container>
@@ -68,7 +82,7 @@
         <v-dialog v-model="dialogDelete" max-width="500px">
           <v-card>
             <v-card-title class="text-h5"
-              >Are you sure you want to delete this item?</v-card-title
+              >Esta seguro que desea deshabilitar al usuario?</v-card-title
             >
             <v-card-actions>
               <v-spacer></v-spacer>
@@ -85,54 +99,60 @@
       </v-toolbar>
     </template>
     <template v-slot:[`item.actions`]="{ item }">
-      <v-icon small class="mr-2" @click="editItem(item)"> mdi-pencil </v-icon>
-      <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
-    </template>
-    <template v-slot:no-data>
-      <v-btn color="primary" @click="initialize"> Reset </v-btn>
+      <v-icon medium color="green" class="mr-2" @click="editItem(item)">
+        mdi-pencil
+      </v-icon>
+      <v-icon medium color="red" @click="deleteItem(item)"> mdi-delete </v-icon>
     </template>
   </v-data-table>
 </template>
 
 <script>
+import axios from "axios";
 export default {
   data: () => ({
     dialog: false,
     dialogDelete: false,
     headers: [
       {
-        text: "Dessert (100g serving)",
+        text: "Nombre",
         align: "start",
         sortable: false,
         value: "name",
       },
-      { text: "Calories", value: "calories" },
-      { text: "Fat (g)", value: "fat" },
-      { text: "Carbs (g)", value: "carbs" },
-      { text: "Protein (g)", value: "protein" },
+      { text: "Apellido", value: "surname" },
+      { text: "Email", value: "email" },
+      { text: "DNI", value: "dni" },
+      { text: "Rol", value: "rol" },
       { text: "Actions", value: "actions", sortable: false },
     ],
-    desserts: [],
+    roles:['ADMIN_ROLE', 'USER_ROLE'],
+    user: [],
     editedIndex: -1,
     editedItem: {
       name: "",
-      calories: 0,
-      fat: 0,
-      carbs: 0,
-      protein: 0,
+      surname: "",
+      dni: "",
+      rol: "",
+      password: "",
+    email: "",
     },
     defaultItem: {
       name: "",
-      calories: 0,
-      fat: 0,
-      carbs: 0,
-      protein: 0,
+      surname: "",
+      dni: "",
+      rol: "",
     },
+    
   }),
 
   computed: {
     formTitle() {
-      return this.editedIndex === -1 ? "New Item" : "Edit Item";
+      return this.editedIndex === -1 ? "Nuevo Usuario" : "Editar Usuario";
+    },
+
+    newOrEdit() {
+      return this.editedIndex === -1 ? true : false;
     },
   },
 
@@ -145,101 +165,53 @@ export default {
     },
   },
 
-  created() {
-    this.initialize();
+  mounted() {
+    this.getUsers();
   },
 
   methods: {
-    initialize() {
-      this.desserts = [
-        {
-          name: "Frozen Yogurt",
-          calories: 159,
-          fat: 6.0,
-          carbs: 24,
-          protein: 4.0,
-        },
-        {
-          name: "Ice cream sandwich",
-          calories: 237,
-          fat: 9.0,
-          carbs: 37,
-          protein: 4.3,
-        },
-        {
-          name: "Eclair",
-          calories: 262,
-          fat: 16.0,
-          carbs: 23,
-          protein: 6.0,
-        },
-        {
-          name: "Cupcake",
-          calories: 305,
-          fat: 3.7,
-          carbs: 67,
-          protein: 4.3,
-        },
-        {
-          name: "Gingerbread",
-          calories: 356,
-          fat: 16.0,
-          carbs: 49,
-          protein: 3.9,
-        },
-        {
-          name: "Jelly bean",
-          calories: 375,
-          fat: 0.0,
-          carbs: 94,
-          protein: 0.0,
-        },
-        {
-          name: "Lollipop",
-          calories: 392,
-          fat: 0.2,
-          carbs: 98,
-          protein: 0,
-        },
-        {
-          name: "Honeycomb",
-          calories: 408,
-          fat: 3.2,
-          carbs: 87,
-          protein: 6.5,
-        },
-        {
-          name: "Donut",
-          calories: 452,
-          fat: 25.0,
-          carbs: 51,
-          protein: 4.9,
-        },
-        {
-          name: "KitKat",
-          calories: 518,
-          fat: 26.0,
-          carbs: 65,
-          protein: 7,
-        },
-      ];
+    getUsers() {
+      axios
+        .get(process.env.VUE_APP_SERVER_URL + "users")
+        .then((data) => {
+          this.user = data.data.usuarios; //esto recibo del endpoint
+          //  console.table(data)
+        })
+        .catch((err) => {
+          console.log(`${err}`);
+        });
     },
 
     editItem(item) {
-      this.editedIndex = this.desserts.indexOf(item);
-      this.editedItem = Object.assign({}, item);
+      this.editedIndex = item.uid;
+      this.editedItem.name = item.name;
+      this.editedItem.surname = item.surname;
+      this.editedItem.dni = item.dni;
+      this.editedItem.rol = item.rol;
       this.dialog = true;
+      //    console.log(item)
+      //  console.log(this.editedIndex)
     },
 
     deleteItem(item) {
-      this.editedIndex = this.desserts.indexOf(item);
-      this.editedItem = Object.assign({}, item);
+      // this.editedIndex = this.user.indexOf(item);
+      this.editedItem = item.uid;
       this.dialogDelete = true;
+      //  console.log(this.editedIndex)
+      //  console.log(this.editedItem)
     },
 
     deleteItemConfirm() {
-      this.desserts.splice(this.editedIndex, 1);
-      this.closeDelete();
+      axios
+        .delete(process.env.VUE_APP_SERVER_URL + `users/${this.editedItem}`)
+        .then((response) => {
+          console.log(response.data);
+          this.getUsers();
+          this.closeDelete();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
 
     close() {
@@ -259,13 +231,45 @@ export default {
     },
 
     save() {
-      if (this.editedIndex > -1) {
-        Object.assign(this.desserts[this.editedIndex], this.editedItem);
-      } else {
-        this.desserts.push(this.editedItem);
+      if (this.editedIndex===-1){
+        this.saveNew()
+      }else{
+        this.saveEdit()
       }
-      this.close();
     },
+
+    saveNew(){
+      
+      axios.post(process.env.VUE_APP_SERVER_URL + 'users', this.editedItem)
+      .then((response)=>{
+        console.log(response)
+        this.getUsers()
+        this.close()
+        console.log(this.editedItem)
+      })
+      .catch((err)=>{
+        console.log(err)
+        console.log(this.editedItem)
+      })
+      
+    },
+
+    saveEdit(){
+      axios
+        .put(
+          process.env.VUE_APP_SERVER_URL + `users/${this.editedIndex}`,
+          this.editedItem
+        )
+        .then((response) => {
+          console.log(response.data);
+          this.getUsers();
+        })
+        .catch((err) => {
+          console.error(`${err}`);
+        });
+      this.close();
+
+    }
   },
 };
 </script>
