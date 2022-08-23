@@ -1,7 +1,7 @@
 <template>
   <v-data-table
     :headers="headers"
-    :items="user"
+    :items="products"
     sort-by="calories"
     class="elevation-1"
   >
@@ -25,27 +25,30 @@
               <v-container>
                 <v-row>
                   <v-col cols="12" sm="6" md="4">
-                  
                     <v-select
-                    label="Grupo"
-                    v-model="editedItem.group"
-                    :items="groupsGetter"
-                    item-value = "id"
-                    item-text = "cod"
-                    return-object
+                      label="Grupo"
+                      v-model="editedItem.group"
+                      :items="groupsGetter"
+                      item-value="id"
+                      item-text="cod"
                     >
                     </v-select>
                   </v-col>
                   <v-col cols="12" sm="6" md="4">
                     <v-select
-                    label="Tipo"
-                    v-model="editedItem.type"
-                    :items="typesGetter"
-                    item-value = "id"
-                    item-text = "cod"
-                    return-object
+                      label="Tipo"
+                      v-model="editedItem.type"
+                      :items="typesGetter"
+                      item-value="id"
+                      item-text="cod"
                     >
                     </v-select>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-text-field
+                      v-model="editedItem.cod"
+                      label="Codigo"
+                    ></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="6" md="4">
                     <v-text-field
@@ -67,7 +70,7 @@
                       v-model="editedItem.stock"
                       label="Stock"
                       type="number"
-                      ></v-text-field>
+                    ></v-text-field>
                   </v-col>
                 </v-row>
               </v-container>
@@ -110,7 +113,7 @@
 
 <script>
 import axios from "axios";
-import {mapGetters} from 'vuex'
+import { mapGetters } from "vuex";
 export default {
   data: () => ({
     dialog: false,
@@ -126,33 +129,33 @@ export default {
       { text: "Tipo", value: "type.cod" },
       { text: "Descripcion", value: "description" },
       { text: "Stock Minimo", value: "stock_min" },
-      {text: "Stock Actual", value: "stock"},
+      { text: "Stock Actual", value: "stock" },
       { text: "Actions", value: "actions", sortable: false },
     ],
-    //roles:['ADMIN_ROLE', 'USER_ROLE'],
-    user: [],
+    products: [],
     editedIndex: -1,
     editedItem: {
       group: "",
       type: "",
+      cod:"",
       description: "",
       stock_min: "",
       stock: "",
-      },
-    defaultItem: {
-      name: "",
-      surname: "",
-      dni: "",
-      rol: "",
     },
-    
+    defaultItem: {
+      group: "",
+      type: "",
+      cod:"",
+      description: "",
+      stock_min: "",
+      stock: "",
+    },
   }),
 
   computed: {
-
-      ...mapGetters({
-      groupsGetter : 'products/group',
-      typesGetter : 'products/types'
+    ...mapGetters({
+      groupsGetter: "products/group",
+      typesGetter: "products/types",
     }),
 
     formTitle() {
@@ -175,9 +178,8 @@ export default {
 
   mounted() {
     this.getProducts();
-    this.$store.dispatch('products/getAllGroups')
-    this.$store.dispatch('products/getAllTypes')
-    console.log('Esto viene del mounted',this.groupGetter)
+    this.$store.dispatch("products/getAllGroups");
+    this.$store.dispatch("products/getAllTypes");
   },
 
   methods: {
@@ -185,24 +187,23 @@ export default {
       axios
         .get(process.env.VUE_APP_SERVER_URL + "products")
         .then((data) => {
-          this.user = data.data.productos; //esto recibo del endpoint
-           // console.table(data)
+          this.products = data.data.productos; //esto recibo del endpoint
+          // console.table(data)
         })
         .catch((err) => {
           console.log(`${err}`);
         });
     },
 
-   
     editItem(item) {
-      this.editedIndex = item.uid;
-      this.editedItem.group = item.group.cod;
-      this.editedItem.type = item.type.cod;
+      this.editedIndex = item.id;
+      this.editedItem.group = item.group._id;
+      this.editedItem.type = item.type._id;
       this.editedItem.description = item.description;
       this.editedItem.stock_min = item.stock_min;
       this.dialog = true;
-      //   console.log(item)
-      //  console.log(this.editedIndex)
+      console.log(item);
+      console.log(this.editedItem);
     },
 
     deleteItem(item) {
@@ -243,30 +244,31 @@ export default {
     },
 
     save() {
-      if (this.editedIndex===-1){
+      if (this.editedIndex === -1) {
         this.saveNew()
-      }else{
-        this.saveEdit()
+        console.log("item a salvar", this.editedItem);
+      } else {
+        //this.saveEdit()
+        console.log("item a salvar", this.editedItem);
       }
     },
 
-    saveNew(){
-      
-      axios.post(process.env.VUE_APP_SERVER_URL + 'users', this.editedItem)
-      .then((response)=>{
-        console.log(response)
-        this.getUsers()
-        this.close()
-       // console.log(this.editedItem)
-      })
-      .catch((err)=>{
-        console.log(err)
-      //  console.log(this.editedItem)
-      })
-      
+    saveNew() {
+      axios
+        .post(process.env.VUE_APP_SERVER_URL + "products", this.editedItem)
+        .then((response) => {
+          console.log(response);
+         this.getProducts();
+          this.close();
+          // console.log(this.editedItem)
+        })
+        .catch((err) => {
+          console.log(err);
+          //  console.log(this.editedItem)
+        });
     },
 
-    saveEdit(){
+    saveEdit() {
       axios
         .put(
           process.env.VUE_APP_SERVER_URL + `users/${this.editedIndex}`,
@@ -280,8 +282,7 @@ export default {
           console.error(`${err}`);
         });
       this.close();
-
-    }
+    },
   },
 };
 </script>
