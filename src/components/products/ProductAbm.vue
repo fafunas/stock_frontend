@@ -157,7 +157,6 @@ export default {
       groupsGetter: "products/group",
       typesGetter: "products/types",
     }),
-
     
 
     formTitle() {
@@ -197,6 +196,8 @@ export default {
         });
     },
 
+
+    //editar items
     editItem(item) {
       this.editedIndex = item.id;
       this.editedItem.group = item.group._id;
@@ -204,10 +205,9 @@ export default {
       this.editedItem.description = item.description;
       this.editedItem.stock_min = item.stock_min;
       this.dialog = true;
-      console.log(item);
-      console.log(this.editedItem);
     },
 
+    //borrar item de la tabla
     deleteItem(item) {
       // this.editedIndex = this.user.indexOf(item);
       this.editedItem = item.id;
@@ -218,10 +218,10 @@ export default {
 
     deleteItemConfirm() {
       axios
-        .delete(process.env.VUE_APP_SERVER_URL + `users/${this.editedItem}`)
+        .delete(process.env.VUE_APP_SERVER_URL + `product/${this.editedItem}`)
         .then((response) => {
           console.log(response.data);
-          this.getUsers();
+          this.getProducts();
           this.closeDelete();
         })
         .catch((err) => {
@@ -248,10 +248,10 @@ export default {
     save() {
       if (this.editedIndex === -1) {
         this.saveNew()
-        console.log("item a salvar", this.editedItem);
+       // console.log("item a salvar", this.editedItem);
       } else {
-        //this.saveEdit()
-        console.log("item a salvar", this.editedItem);
+        this.saveEdit()
+        //console.log("item a salvar", this.editedItem);
       }
     },
 
@@ -273,12 +273,12 @@ export default {
     saveEdit() {
       axios
         .put(
-          process.env.VUE_APP_SERVER_URL + `users/${this.editedIndex}`,
+          process.env.VUE_APP_SERVER_URL + `products/${this.editedIndex}`,
           this.editedItem
         )
         .then((response) => {
           console.log(response.data);
-          this.getUsers();
+          this.getProducts();
         })
         .catch((err) => {
           console.error(`${err}`);

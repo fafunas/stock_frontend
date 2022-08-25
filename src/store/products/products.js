@@ -39,8 +39,8 @@ export default{
             axios.get(process.env.VUE_APP_SERVER_URL + 'groups')
             .then((data)=>{
                 context.commit("GROUPS",data.data.group[0])
-                console.table(data.data.group[0])
-                console.log(data.data.group[0])
+               // console.table(data.data.group[0])
+                //console.log(data.data.group[0])
             })
             
         }
