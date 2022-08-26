@@ -19,6 +19,11 @@ const routes = [
     path:'/panel',
     name: 'UserPanel',
     component:()=> import('../views/UserABM.vue')
+  },
+  {
+    path:'/product',
+    name:'Product Panel',
+    component:()=> import('../views/ProductAbm.vue')
   }
 ]
 

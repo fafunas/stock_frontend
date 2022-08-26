@@ -51,7 +51,7 @@
           { title: 'Ingreso', icon: 'mdi-home-import-outline', path:'/ingreso'},
           { title: 'Egreso', icon: 'mdi-home-export-outline', path:'/egreso'},
           { title: 'Traspaso', icon: 'mdi-home-switch', path:'/traspaso' },
-          {title:'Productos', icon: 'mdi-alpha-p-circle-outline', path:'/productos'},
+          {title:'Productos', icon: 'mdi-alpha-p-circle-outline', path:'/product'},
           {title: 'Usuarios', icon: 'mdi-account', path:'/panel'}
         ],
         right: null,
