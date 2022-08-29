@@ -100,10 +100,7 @@ export default {
     ],
     finalItem:{
         nro_in:"",
-        items:[{"product":"",
-        "quantity":"",
-        "observation":"",
-        "nro_rq":""}],
+        items:[],
         user: "",
         supplier:"",
         },
@@ -140,16 +137,17 @@ export default {
         this.finalItem.supplier = this.supplier
         this.finalItem.user = "62c31bd49110e5f7d9ab1cac"
         this.items.forEach(e=>{
-            if(e.product_id){
+            (e.product_id)
                 this.finalItem.items.push({
                 'product' : e.product_id,
                 'quantity': e.quantity,
                 'observation': e.observation,
                 'nro_rq' : e.nro_rq
             })
-            }
+            
             
         })
+        this.$store.dispatch("wareHouse/confirmNewIn", this.finalItem)
         console.log(this.finalItem)
     }
   },
