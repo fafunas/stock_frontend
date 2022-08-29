@@ -24,6 +24,11 @@ const routes = [
     path:'/product',
     name:'Product Panel',
     component:()=> import('../views/ProductAbm.vue')
+  },
+  {
+    path:'/warehouse/in',
+    name: 'Warehouse',
+    component:()=> import('../views/WarehouseIn.vue')
   }
 ]
 
