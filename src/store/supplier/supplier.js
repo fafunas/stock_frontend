@@ -18,7 +18,7 @@ export default{
             axios.get(process.env.VUE_APP_SERVER_URL + 'supplier')
             .then((data)=>{
                 context.commit("SUPPLIERS", data.data.suppliers)
-                console.log(data.data)
+             //   console.log(data.data)
             })
         },
 

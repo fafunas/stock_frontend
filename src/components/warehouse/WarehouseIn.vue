@@ -20,7 +20,7 @@
         <div>{{ date }}</div>
         <br />
 
-        <div>Nro Ingreso viene de la base</div>
+        <div>{{number}}</div>
       </div>
     </div>
 
@@ -79,7 +79,7 @@
       </v-btn>
     </div>
     <div class="d-flex justify-center mb-6 pa-4">
-      <v-btn class="mx-1" dark color="green" small>
+      <v-btn class="mx-1" dark color="green" @click="confirmRegistration()" small>
         <v-icon dark> Registrar </v-icon>
       </v-btn>
     </div>
@@ -98,8 +98,18 @@ export default {
         observation: "",
       },
     ],
+    finalItem:{
+        nro_in:"",
+        items:[{"product":"",
+        "quantity":"",
+        "observation":"",
+        "nro_rq":""}],
+        user: "",
+        supplier:"",
+        },
     supplier: "",
     quantityRules: [(v) => !!v || "La cantidad es Obligatoria"],
+    number:4
   }),
 
   mounted() {
@@ -124,6 +134,24 @@ export default {
         observation: "",
       });
     },
+
+    confirmRegistration(){
+        this.finalItem.nro_in= this.number
+        this.finalItem.supplier = this.supplier
+        this.finalItem.user = "62c31bd49110e5f7d9ab1cac"
+        this.items.forEach(e=>{
+            if(e.product_id){
+                this.finalItem.items.push({
+                'product' : e.product_id,
+                'quantity': e.quantity,
+                'observation': e.observation,
+                'nro_rq' : e.nro_rq
+            })
+            }
+            
+        })
+        console.log(this.finalItem)
+    }
   },
 
   computed: {
