@@ -23,7 +23,7 @@
         <div>{{number}}</div>
       </div>
     </div>
-
+    <v-divider class="mb-10"></v-divider>
     <v-simple-table>
       <thead>
         <tr>
