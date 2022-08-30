@@ -35,5 +35,7 @@ export default {
         })
     }
   },
-  getters: {},
+  getters: {
+    totalIn : state => state.nro_in + 1
+  },
 };

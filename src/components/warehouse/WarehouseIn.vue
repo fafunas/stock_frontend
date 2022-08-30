@@ -20,7 +20,7 @@
         <div>{{ date }}</div>
         <br />
 
-        <div>{{number}}</div>
+        <div>{{totalIn}}</div>
       </div>
     </div>
     <v-divider class="mb-10"></v-divider>
@@ -79,10 +79,42 @@
       </v-btn>
     </div>
     <div class="d-flex justify-center mb-6 pa-4">
-      <v-btn class="mx-1" dark color="green" @click="confirmRegistration()" small>
-        <v-icon dark> Registrar </v-icon>
+      <v-btn class="mx-1" color="primary" @click="dialog= true">
+         Registrar
       </v-btn>
     </div>
+    <v-row justify="center">
+    <v-dialog
+      v-model="dialog"
+      persistent
+      max-width="290"
+    >
+      
+      <v-card>
+        <v-card-title class="text-h5">
+          Confirmacion
+        </v-card-title>
+        <v-card-text>¿Esta Seguro que quiere registrar el ingreso?</v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="green darken-1"
+            text
+            @click="dialog = false"
+          >
+            Cancelar
+          </v-btn>
+          <v-btn
+            color="green darken-1"
+            text
+            @click="confirmRegistration()"
+          >
+            Aceptar
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+  </v-row>
   </v-main>
 </template>
 
@@ -106,12 +138,13 @@ export default {
         },
     supplier: "",
     quantityRules: [(v) => !!v || "La cantidad es Obligatoria"],
-    number:4
+    dialog : false
   }),
 
   mounted() {
     this.$store.dispatch("products/getAllProducts");
     this.$store.dispatch("supplier/getAllSuppliers")
+    this.$store.dispatch("wareHouse/getAllRegIn")
   },
 
   methods: {
@@ -133,7 +166,7 @@ export default {
     },
 
     confirmRegistration(){
-        this.finalItem.nro_in= this.number
+        this.finalItem.nro_in= this.totalIn
         this.finalItem.supplier = this.supplier
         this.finalItem.user = "62c31bd49110e5f7d9ab1cac"
         this.items.forEach(e=>{
@@ -148,7 +181,10 @@ export default {
             
         })
         this.$store.dispatch("wareHouse/confirmNewIn", this.finalItem)
-        console.log(this.finalItem)
+        console.log(this.finalItem);
+        this.dialog = false;
+        this.$router.go(this.$router.currentRoute)
+       // console.log(this.finalItem)
     }
   },
 
@@ -166,7 +202,8 @@ export default {
 
     ...mapGetters({
       products: "products/products",
-      suppliers: "supplier/supplier"
+      suppliers: "supplier/supplier",
+      totalIn : "wareHouse/totalIn"
     }),
   },
 };
