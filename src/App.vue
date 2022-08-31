@@ -22,10 +22,12 @@ export default {
 
   
   //Si no esta el token lo envia al login
-  created(){
-    if (!this.loggedIn){
-            this.$router.push('/login')
-        }
-  }
+  // created(){
+  //   if (!this.loggedIn){
+  //           this.$router.push('/login')
+  //       }else{
+  //         this.$$router.push('/')
+  //       }
+  // }
 };
 </script>

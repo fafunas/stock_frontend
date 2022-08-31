@@ -48,6 +48,7 @@ export default{
     },
     getters:{
         types: state => state.types,
-        group: state => state.groups
+        group: state => state.groups,
+        products: state=>state.products
     }
 }

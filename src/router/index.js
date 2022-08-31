@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+
 
 Vue.use(VueRouter)
 
@@ -8,7 +8,8 @@ const routes = [
   {
     path: '/',
     name: 'home',
-    component: HomeView
+    component:()=> import('../views/HomeView.vue'),
+    meta: { requiresAuth: true }
   },
   {
     path:'/login',
@@ -18,14 +19,24 @@ const routes = [
   {
     path:'/panel',
     name: 'UserPanel',
-    component:()=> import('../views/UserABM.vue')
+    component:()=> import('../views/UserABM.vue'),
+   // meta: { requiresAuth: true }
   },
   {
     path:'/product',
     name:'Product Panel',
-    component:()=> import('../views/ProductAbm.vue')
+    component:()=> import('../views/ProductAbm.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
+    path:'/warehouse/in',
+    name: 'Warehouse',
+    component:()=> import('../views/WarehouseIn.vue'),
+    meta: { requiresAuth: true }
   }
 ]
+
+
 
 const router = new VueRouter({
   mode: 'history',
@@ -33,4 +44,16 @@ const router = new VueRouter({
   routes
 })
 
+router.beforeEach((to, from, next) => {
+  const publicPages = ['/login','/','/warehouse/in'];
+  const authRequired = !publicPages.includes(to.path);
+  const loggedIn = localStorage.getItem('token');
+  // trying to access a restricted page + not logged in
+  // redirect to login page
+  if (authRequired && !loggedIn) {
+    next('/login');
+  } else {
+    next();
+  }
+});
 export default router
