@@ -117,19 +117,16 @@ export default {
       {
         product_id: "",
         quantity: "",
-        observation: ""
-        
+        observation: "",
       },
     ],
-    user:"",
+    user: "",
     finalItem: {
       nro_out: "",
       items: [],
       user: "",
     },
-    quantityRules: [
-      (v) => !!v || "La cantidad es Obligatoria"
-    ],
+    quantityRules: [(v) => !!v || "La cantidad es Obligatoria"],
     dialog: false,
   }),
 
@@ -137,8 +134,6 @@ export default {
     this.$store.dispatch("products/getAllProducts");
     this.$store.dispatch("wareHouse/getAllRegOut");
     this.$store.dispatch("users/getEnableUsers");
-    
-    
   },
 
   methods: {
@@ -158,24 +153,50 @@ export default {
       });
     },
 
-    confirmRegistration() {
-      this.finalItem.nro_out = this.totalOut;
-      this.finalItem.user = this.user;
-      this.items.forEach((e) => {
-        e.product_id;
-        this.finalItem.items.push({
-          'product': e.product_id.id,
-          'quantity': e.quantity,
-          'observation': e.observation,
-        });
-      });
-      this.$store.dispatch("wareHouse/confirmNewOut", this.finalItem);
-      console.log(this.finalItem);
-      this.dialog = false;
-      this.$router.go(this.$router.currentRoute);
-      // console.log(this.finalItem)
+    checkStock() {
+      const stock = (v) => v.quantity <= v.product_id.stock;
+      return this.items.every(stock);
     },
 
+    confirmAlert() {
+      this.$store.dispatch("notifications/SET_NOTIFICATION", {
+        type: "success",
+        text: "Registro Guardado Correctamente",
+      });
+      
+    },
+    errorAlert() {
+      this.$store.dispatch("notifications/SET_NOTIFICATION", {
+        type: "warning",
+        text: "Estas seleccionando mas que lo disponible",
+      });
+      
+    },
+
+    confirmRegistration() {
+      if (!this.checkStock()) {
+        this.finalItem.lenght = 0;
+        this.errorAlert();
+        
+       } else {
+        this.finalItem.nro_out = this.totalOut;
+        this.finalItem.user = this.user;
+        this.items.forEach((e) => {
+          e.product_id;
+          this.finalItem.items.push({
+            product: e.product_id.id,
+            quantity: e.quantity,
+            observation: e.observation,
+          });
+        });
+        this.$store.dispatch("wareHouse/confirmNewOut", this.finalItem);
+       // console.log("si pasa el else", this.finalItem);
+        this.dialog = false;
+        this.confirmAlert();
+        this.$router.go(this.$router.currentRoute);
+        //console.log(this.checkStock());
+      }
+    },
   },
 
   computed: {

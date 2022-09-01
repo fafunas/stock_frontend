@@ -11,6 +11,7 @@
 import SideBar from "../components/SideBar.vue";
 import WarehouseOut from "../components/warehouse/WarehouseOut.vue"
 
+
 export default {
   name: "WareHouse",
 
