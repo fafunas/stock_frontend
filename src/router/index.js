@@ -26,14 +26,20 @@ const routes = [
     path:'/product',
     name:'Product Panel',
     component:()=> import('../views/ProductAbm.vue'),
-    meta: { requiresAuth: true }
+   // meta: { requiresAuth: true }
   },
   {
     path:'/warehouse/in',
     name: 'Warehouse',
     component:()=> import('../views/WarehouseIn.vue'),
     meta: { requiresAuth: true }
-  }
+  },
+  {
+    path:'/warehouse/out',
+    name: 'WarehouseOut',
+    component:()=> import('../views/WarehouseOut.vue'),
+    meta: { requiresAuth: true }
+  },
 ]
 
 
@@ -44,16 +50,16 @@ const router = new VueRouter({
   routes
 })
 
-router.beforeEach((to, from, next) => {
-  const publicPages = ['/login','/','/warehouse/in'];
-  const authRequired = !publicPages.includes(to.path);
-  const loggedIn = localStorage.getItem('token');
-  // trying to access a restricted page + not logged in
-  // redirect to login page
-  if (authRequired && !loggedIn) {
-    next('/login');
-  } else {
-    next();
-  }
-});
+// router.beforeEach((to, from, next) => {
+//   const publicPages = ['/login','/','/warehouse/in'];
+//   const authRequired = !publicPages.includes(to.path);
+//   const loggedIn = localStorage.getItem('token');
+//   // trying to access a restricted page + not logged in
+//   // redirect to login page
+//   if (authRequired && !loggedIn) {
+//     next('/login');
+//   } else {
+//     next();
+//   }
+// });
 export default router
