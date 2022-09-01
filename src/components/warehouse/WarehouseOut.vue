@@ -3,7 +3,7 @@
     <div class="d-flex justify-space-between mb-6 pt-4">
       <div>
         <v-autocomplete
-          v-model="users"
+          v-model="user"
           :items="users"
           item-value="uid"
           item-text="name"
@@ -55,7 +55,6 @@
               label="Buscar Producto"
               solo-inverted
               return-object
-              @change="stock(item.product_id)"
             >
             </v-autocomplete>
           </td>
@@ -118,13 +117,13 @@ export default {
       {
         product_id: "",
         quantity: "",
-        observation: "",
-        stock: "",
+        observation: ""
+        
       },
     ],
-    //stock:0,
+    user:"",
     finalItem: {
-      nro_in: "",
+      nro_out: "",
       items: [],
       user: "",
     },
@@ -138,6 +137,8 @@ export default {
     this.$store.dispatch("products/getAllProducts");
     this.$store.dispatch("wareHouse/getAllRegOut");
     this.$store.dispatch("users/getEnableUsers");
+    
+    
   },
 
   methods: {
@@ -153,36 +154,28 @@ export default {
       this.items.push({
         product_id: "",
         quantity: "",
-        nro_rq: "",
         observation: "",
       });
     },
 
     confirmRegistration() {
-      this.finalItem.nro_in = this.totalIn;
-      this.finalItem.supplier = this.supplier;
-      this.finalItem.user = "62c31bd49110e5f7d9ab1cac";
+      this.finalItem.nro_out = this.totalOut;
+      this.finalItem.user = this.user;
       this.items.forEach((e) => {
         e.product_id;
         this.finalItem.items.push({
-          product: e.product_id,
-          quantity: e.quantity,
-          observation: e.observation,
-          nro_rq: e.nro_rq,
+          'product': e.product_id.id,
+          'quantity': e.quantity,
+          'observation': e.observation,
         });
       });
-      this.$store.dispatch("wareHouse/confirmNewIn", this.finalItem);
+      this.$store.dispatch("wareHouse/confirmNewOut", this.finalItem);
       console.log(this.finalItem);
       this.dialog = false;
       this.$router.go(this.$router.currentRoute);
       // console.log(this.finalItem)
     },
 
-    stock(itemID) {
-      //   this.items.stock= itemID.stock
-      return this.products.productos.find((e) => (e._id = itemID)).stock;
-      //       return console.log(itemID.stock)
-    },
   },
 
   computed: {
