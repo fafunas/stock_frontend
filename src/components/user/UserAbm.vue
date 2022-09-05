@@ -109,6 +109,7 @@
 
 <script>
 import axios from "axios";
+import authHeader from '@/services/login/auth_header';
 export default {
   data: () => ({
     dialog: false,
@@ -172,7 +173,7 @@ export default {
   methods: {
     getUsers() {
       axios
-        .get(process.env.VUE_APP_SERVER_URL + "users")
+        .get(process.env.VUE_APP_SERVER_URL + "users", {headers:authHeader()})
         .then((data) => {
           this.user = data.data.usuarios; //esto recibo del endpoint
             //console.table(data.data.usuarios)
