@@ -1,4 +1,5 @@
 import axios from "axios";
+import authHeader from '@/services/login/auth_header'
 
 export default {
   namespaced: true,
@@ -27,7 +28,7 @@ export default {
   actions: {
     confirmNewIn(context, payload) {
       axios
-        .post(process.env.VUE_APP_SERVER_URL + "warehouse/in",payload)
+        .post(process.env.VUE_APP_SERVER_URL + "warehouse/in",payload,{headers: authHeader()})
         .then(() => {
           context.commit("REGISTERIN", payload);
         })
@@ -37,7 +38,7 @@ export default {
     },
     confirmNewOut(context, payload) {
       axios
-        .post(process.env.VUE_APP_SERVER_URL + "warehouse/out",payload)
+        .post(process.env.VUE_APP_SERVER_URL + "warehouse/out",payload,{headers: authHeader()})
         .then(() => {
           context.commit("REGISTEROUT", payload);
         })
@@ -47,13 +48,13 @@ export default {
     },
 
     getAllRegIn(context){
-        axios.get(process.env.VUE_APP_SERVER_URL + "warehouse/in")
+        axios.get(process.env.VUE_APP_SERVER_URL + "warehouse/in",{headers: authHeader()})
         .then((data)=>{
             context.commit("TOTAL_NRO_IN",data.data.total)
         })
     },
     getAllRegOut(context){
-      axios.get(process.env.VUE_APP_SERVER_URL + "warehouse/out")
+      axios.get(process.env.VUE_APP_SERVER_URL + "warehouse/out",{headers: authHeader()})
       .then((data)=>{
           context.commit("TOTAL_NRO_OUT",data.data.total)
       })

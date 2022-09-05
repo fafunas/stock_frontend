@@ -1,18 +1,18 @@
 <template>
        <v-app-bar
       app
-      color="primary"
+      color="light-blue darken-2"
       dark
       fixed
     >
       <div class="d-flex align-center">
         <v-img
-          alt="Vuetify Logo"
+          alt="Logo"
           class="shrink mr-2"
           contain
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
+          src="../assets/logo.png"
           transition="scale-transition"
-          width="40"
+          width="150"
         />
       </div>
 
