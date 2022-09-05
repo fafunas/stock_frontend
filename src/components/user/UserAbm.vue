@@ -64,7 +64,9 @@
                   <v-col cols="12" sm="6" md="4">
                     <v-select
                       v-model="editedItem.rol"
-                      :items="roles"
+                      :items="roles[0]"
+                      item-value="_id"
+                      item-text="rol"
                       label="Rol"
                     ></v-select>
                   </v-col>
@@ -109,7 +111,8 @@
 
 <script>
 import axios from "axios";
-import authHeader from '@/services/login/auth_header';
+import authHeader from "@/services/login/auth_header";
+import { mapGetters } from "vuex";
 export default {
   data: () => ({
     dialog: false,
@@ -124,10 +127,9 @@ export default {
       { text: "Apellido", value: "surname" },
       { text: "Email", value: "email" },
       { text: "DNI", value: "dni" },
-      { text: "Rol", value: "rol" },
+      { text: "Rol", value: "rol.rol" },
       { text: "Actions", value: "actions", sortable: false },
     ],
-    roles:['ADMIN_ROLE', 'USER_ROLE'],
     user: [],
     editedIndex: -1,
     editedItem: {
@@ -136,7 +138,7 @@ export default {
       dni: "",
       rol: "",
       password: "",
-    email: "",
+      email: "",
     },
     defaultItem: {
       name: "",
@@ -144,7 +146,6 @@ export default {
       dni: "",
       rol: "",
     },
-    
   }),
 
   computed: {
@@ -155,6 +156,9 @@ export default {
     newOrEdit() {
       return this.editedIndex === -1 ? true : false;
     },
+    ...mapGetters({
+      roles: "users/roles",
+    }),
   },
 
   watch: {
@@ -168,16 +172,18 @@ export default {
 
   mounted() {
     this.getUsers();
+    this.$store.dispatch("users/getAllRoles");
   },
 
   methods: {
     getUsers() {
       axios
-        .get(process.env.VUE_APP_SERVER_URL + "users", {headers:authHeader()})
+        .get(process.env.VUE_APP_SERVER_URL + "users", {
+          headers: authHeader(),
+        })
         .then((data) => {
           this.user = data.data.usuarios; //esto recibo del endpoint
-            //console.table(data.data.usuarios)
-            //console.log(data.data.usuarios)
+        
         })
         .catch((err) => {
           console.log(`${err}`);
@@ -205,7 +211,9 @@ export default {
 
     deleteItemConfirm() {
       axios
-        .delete(process.env.VUE_APP_SERVER_URL + `users/${this.editedItem}`)
+        .delete(process.env.VUE_APP_SERVER_URL + `users/${this.editedItem}`, {
+          headers: authHeader(),
+        })
         .then((response) => {
           console.log(response.data);
           this.getUsers();
@@ -233,34 +241,37 @@ export default {
     },
 
     save() {
-      if (this.editedIndex===-1){
-        this.saveNew()
-      }else{
-        this.saveEdit()
+      if (this.editedIndex === -1) {
+        this.saveNew();
+      } else {
+        this.saveEdit();
       }
     },
 
-    saveNew(){
-      
-      axios.post(process.env.VUE_APP_SERVER_URL + 'users', this.editedItem)
-      .then((response)=>{
-        console.log(response)
-        this.getUsers()
-        this.close()
-        console.log(this.editedItem)
-      })
-      .catch((err)=>{
-        console.log(err)
-        console.log(this.editedItem)
-      })
-      
+    saveNew() {
+      axios
+        .post(process.env.VUE_APP_SERVER_URL + "users", this.editedItem , {
+          headers: authHeader(),
+        })
+        .then((response) => {
+          console.log(response);
+          this.getUsers();
+          this.close();
+        //  console.log(this.editedItem);
+        })
+        .catch((err) => {
+          console.log(err);
+         // console.log(this.editedItem);
+        });
     },
 
-    saveEdit(){
+    saveEdit() {
       axios
         .put(
           process.env.VUE_APP_SERVER_URL + `users/${this.editedIndex}`,
-          this.editedItem
+          this.editedItem , {
+          headers: authHeader(),
+        }
         )
         .then((response) => {
           console.log(response.data);
@@ -270,8 +281,7 @@ export default {
           console.error(`${err}`);
         });
       this.close();
-
-    }
+    },
   },
 };
 </script>

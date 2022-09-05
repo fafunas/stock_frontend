@@ -113,6 +113,7 @@
 
 <script>
 import axios from "axios";
+import authHeader from '@/services/login/auth_header'
 import { mapGetters } from "vuex";
 export default {
   data: () => ({
@@ -186,7 +187,7 @@ export default {
   methods: {
     getProducts() {
       axios
-        .get(process.env.VUE_APP_SERVER_URL + "products")
+        .get(process.env.VUE_APP_SERVER_URL + "products", {headers: authHeader()})
         .then((data) => {
           this.products = data.data.productos; //esto recibo del endpoint
           // console.table(data)
@@ -218,7 +219,7 @@ export default {
 
     deleteItemConfirm() {
       axios
-        .delete(process.env.VUE_APP_SERVER_URL + `product/${this.editedItem}`)
+        .delete(process.env.VUE_APP_SERVER_URL + `product/${this.editedItem}`, {headers: authHeader()})
         .then((response) => {
           console.log(response.data);
           this.getProducts();
@@ -257,7 +258,7 @@ export default {
 
     saveNew() {
       axios
-        .post(process.env.VUE_APP_SERVER_URL + "products", this.editedItem)
+        .post(process.env.VUE_APP_SERVER_URL + "products", this.editedItem,{headers: authHeader()})
         .then((response) => {
           console.log(response);
          this.getProducts();
@@ -274,7 +275,7 @@ export default {
       axios
         .put(
           process.env.VUE_APP_SERVER_URL + `products/${this.editedIndex}`,
-          this.editedItem
+          this.editedItem,{headers: authHeader()}
         )
         .then((response) => {
           console.log(response.data);

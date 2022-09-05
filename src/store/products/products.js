@@ -1,4 +1,5 @@
 import axios from 'axios'
+import authHeader from '@/services/login/auth_header'
 
 export default{
     namespaced: true,
@@ -22,21 +23,21 @@ export default{
     },
     actions:{
         getAllProducts(context){
-            axios.get(process.env.VUE_APP_SERVER_URL + 'products')
+            axios.get(process.env.VUE_APP_SERVER_URL + 'products',{headers: authHeader()})
             .then((data)=>{
                 context.commit("PRODUCTS", data.data)
             })
         },
 
         getAllTypes(context){
-            axios.get(process.env.VUE_APP_SERVER_URL + 'types')
+            axios.get(process.env.VUE_APP_SERVER_URL + 'types',{headers: authHeader()})
             .then((data)=>{
                 context.commit("TYPES",data.data.types[0])
             })
         },
 
         getAllGroups(context){
-            axios.get(process.env.VUE_APP_SERVER_URL + 'groups')
+            axios.get(process.env.VUE_APP_SERVER_URL + 'groups',{headers: authHeader()})
             .then((data)=>{
                 context.commit("GROUPS",data.data.group[0])
                // console.table(data.data.group[0])
