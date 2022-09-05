@@ -4,16 +4,18 @@
     <v-main>
       <router-view/>
     </v-main>
+        <AlertComponet class="alert"/>
   </v-app>
 </template>
 
 <script>
 
 import NavBar from './components/NavBar.vue'
+import AlertComponet from "./components/AlertComponet.vue"
 
 export default {
 
-  components:{NavBar},
+  components:{NavBar,AlertComponet},
   name: 'App',
 
   data: () => ({

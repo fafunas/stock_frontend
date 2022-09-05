@@ -6,6 +6,7 @@ import users from './users/users'
 import products from './products/products'
 import supplier from './supplier/supplier'
 import wareHouse from './warehouse/warehouse'
+import notifications from './notifications/notifications'
 
 Vue.use(Vuex)
 
@@ -23,6 +24,7 @@ export default new Vuex.Store({
     users,
     products,
     supplier,
-    wareHouse
+    wareHouse,
+    notifications
   }
 })

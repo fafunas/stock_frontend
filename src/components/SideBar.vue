@@ -30,8 +30,16 @@ export default {
   data() {
     return {
       items: [
-        { title: "Ingreso", icon: "mdi-home-import-outline", path: "/warehouse/in" },
-        { title: "Egreso", icon: "mdi-home-export-outline", path: "/egreso" },
+        {
+          title: "Ingreso",
+          icon: "mdi-home-import-outline",
+          path: "/warehouse/in",
+        },
+        {
+          title: "Egreso",
+          icon: "mdi-home-export-outline",
+          path: "/warehouse/out",
+        },
         { title: "Traspaso", icon: "mdi-home-switch", path: "/traspaso" },
         {
           title: "Productos",
