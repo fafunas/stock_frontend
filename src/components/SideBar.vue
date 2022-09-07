@@ -11,15 +11,53 @@
       <v-divider></v-divider>
 
       <v-list dense nav>
-        <v-list-item v-for="item in items" :key="item.title" link>
+        <v-list-item  link>
           <v-list-item-icon class="mr-2">
-            <v-icon>{{ item.icon }}</v-icon>
+            <v-icon>mdi-home-import-outline</v-icon>
           </v-list-item-icon>
 
           <v-list-item-content>
-            <router-link :to="item.path">{{ item.title }}</router-link>
+            <router-link to="/warehouse/in">Ingreso</router-link>
           </v-list-item-content>
         </v-list-item>
+        <v-list-item  link>
+          <v-list-item-icon class="mr-2">
+            <v-icon>mdi-home-export-outline</v-icon>
+          </v-list-item-icon>
+
+          <v-list-item-content>
+            <router-link to="/warehouse/out">Egreso</router-link>
+          </v-list-item-content>
+          </v-list-item>
+          <v-list-item  link>
+          <v-list-item-icon class="mr-2">
+            <v-icon>mdi-home-switch</v-icon>
+          </v-list-item-icon>
+
+          <v-list-item-content>
+            <router-link to="/warehouse/switch">Traspaso</router-link>
+          </v-list-item-content>
+          </v-list-item>
+          <v-list-item v-if="userRol" link>
+          <v-list-item-icon class="mr-2">
+            <v-icon>mdi-alpha-p-circle-outline</v-icon>
+          </v-list-item-icon>
+
+          <v-list-item-content>
+            <router-link to="/product">Productos</router-link>
+          </v-list-item-content>
+          </v-list-item>
+          <v-list-item v-if="userRol"  link>
+          <v-list-item-icon class="mr-2">
+            <v-icon>mdi-account</v-icon>
+          </v-list-item-icon>
+
+          <v-list-item-content>
+            <router-link to="/panel">Usuarios</router-link>
+          </v-list-item-content>
+          </v-list-item>
+          
+        
       </v-list>
     </v-navigation-drawer>
   </v-card>
@@ -29,28 +67,21 @@
 export default {
   data() {
     return {
-      items: [
-        {
-          title: "Ingreso",
-          icon: "mdi-home-import-outline",
-          path: "/warehouse/in",
-        },
-        {
-          title: "Egreso",
-          icon: "mdi-home-export-outline",
-          path: "/warehouse/out",
-        },
-        { title: "Traspaso", icon: "mdi-home-switch", path: "/traspaso" },
-        {
-          title: "Productos",
-          icon: "mdi-alpha-p-circle-outline",
-          path: "/product",
-        },
-        { title: "Usuarios", icon: "mdi-account", path: "/panel" },
-      ],
+     
       right: null,
     };
   },
+
+  computed:{
+    userRol(){
+      if (this.$store.state.users.userRol.role === "ADMIN_ROLE"){
+        return true
+      }else{
+        return false
+      }
+      
+    }
+  }
 };
 </script>
 
