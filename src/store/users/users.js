@@ -6,7 +6,8 @@ export default{
     state:{
         users:[],
         userEnables:[],
-        rol:[]
+        rol:[],
+        userRol:""
     },
 
     mutations:{
@@ -18,6 +19,9 @@ export default{
         },
         ROLES(state,payload){
             state.rol = payload
+        },
+        USERROL(state,payload){
+            state.userRol = payload
         }
         
 
@@ -45,12 +49,23 @@ export default{
               //  console.log(data.data.roles)
             })
         },
+        getRolbyMail(context,payload){
+            
+            axios.post(process.env.VUE_APP_SERVER_URL + 'rol/rol' ,payload)
+            .then((data)=>{
+                context.commit("USERROL",data.data)
+               // console.log(data.data)
+            })
+
+        }
 
 
 
     },
     getters:{
         usersEnables : state=> state.userEnables,
-        roles: state => state.rol
-    }
+        roles: state => state.rol,
+        userRol : state=> state.userRol
+    },
+
 }
