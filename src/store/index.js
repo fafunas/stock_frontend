@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import createPersistedState from 'vuex-persistedstate'
 
 import {auth} from './auth/auth'
 import users from './users/users'
@@ -26,5 +27,10 @@ export default new Vuex.Store({
     supplier,
     wareHouse,
     notifications
-  }
+  },
+  plugins:[
+    createPersistedState({
+      paths:['users'],
+  })
+  ]
 })
