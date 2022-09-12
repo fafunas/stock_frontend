@@ -30,7 +30,7 @@ export default new Vuex.Store({
   },
   plugins:[
     createPersistedState({
-      paths:['users'],
+      paths:['users.userRol', 'users.id'],
   })
   ]
 })

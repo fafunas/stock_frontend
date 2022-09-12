@@ -7,7 +7,9 @@ export default{
         users:[],
         userEnables:[],
         rol:[],
-        userRol:""
+        userRol:"",
+        id:""
+
     },
 
     mutations:{
@@ -21,8 +23,10 @@ export default{
             state.rol = payload
         },
         USERROL(state,payload){
-            state.userRol = payload
-        }
+            state.userRol = payload.role
+            state.id = payload.i
+        },
+        
         
 
     },
@@ -54,7 +58,8 @@ export default{
             axios.post(process.env.VUE_APP_SERVER_URL + 'rol/rol' ,payload)
             .then((data)=>{
                 context.commit("USERROL",data.data)
-               // console.log(data.data)
+                
+                console.log(data.data)
             })
 
         }

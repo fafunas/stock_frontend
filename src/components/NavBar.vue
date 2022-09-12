@@ -6,14 +6,15 @@
       fixed
     >
       <div class="d-flex align-center">
-        <v-img
+        <router-link to='/'><v-img
           alt="Logo"
           class="shrink mr-2"
           contain
           src="../assets/logo.png"
           transition="scale-transition"
           width="150"
-        />
+        /></router-link>
+        
       </div>
 
       <v-spacer></v-spacer>

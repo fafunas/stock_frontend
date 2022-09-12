@@ -17,6 +17,16 @@
         </v-autocomplete>
       </div>
       <div>
+        <v-text-field
+            label="N° Remito"
+            placeholder="N° Remito"
+            outlined
+            required
+            v-model="referral"
+            :rules="refeRule"
+          ></v-text-field>
+      </div>
+      <div>
         <div>{{ date }}</div>
         <br />
 
@@ -135,9 +145,12 @@ export default {
         items:[],
         user: "",
         supplier:"",
+        referral:""        
         },
     supplier: "",
+    referral:"",
     quantityRules: [(v) => !!v || "La cantidad es Obligatoria"],
+    refeRule: [(v) => !!v || "Campo Obligatorio"],
     dialog : false
   }),
 
@@ -168,7 +181,8 @@ export default {
     confirmRegistration(){
         this.finalItem.nro_in= this.totalIn
         this.finalItem.supplier = this.supplier
-        this.finalItem.user = "62c31bd49110e5f7d9ab1cac"
+        this.finalItem.referral = this.referral
+        this.finalItem.user = this.$store.state.users.id
         this.items.forEach(e=>{
             (e.product_id)
                 this.finalItem.items.push({
@@ -184,7 +198,7 @@ export default {
         console.log(this.finalItem);
         this.dialog = false;
         this.$router.go(this.$router.currentRoute)
-       // console.log(this.finalItem)
+   
     }
   },
 

@@ -7,7 +7,9 @@ export default {
     registerIn: [],
     registerOut: [],
     nro_in:0,
-    nro_out:0
+    nro_out:0,
+    totalIn:[],
+    totalOut:[]
   },
 
   mutations: {
@@ -16,6 +18,12 @@ export default {
     },
     REGISTEROUT(state, payload) {
       state.registerOut = payload;
+    },
+    TOTALIN(state,payload){
+      state.totalIn = payload
+    },
+    TOTALOUT(state,payload){
+      state.totalOUT = payload
     },
 
     TOTAL_NRO_IN(state,nro_in){
@@ -58,10 +66,19 @@ export default {
       .then((data)=>{
           context.commit("TOTAL_NRO_OUT",data.data.total)
       })
-  }
+  },
+
+    getAllIn(context){
+      axios.get(process.env.VUE_APP_SERVER_URL + "warehouse/in",{headers: authHeader()})
+      .then ((data)=>{
+        context.commit("TOTALIN", data.data.opIn)
+     //   console.table(data.data.opIn)
+      })
+    }
   },
   getters: {
     totalIn : state => state.nro_in + 1,
-    totalOut: state => state.nro_out + 1 
+    totalOut: state => state.nro_out + 1,
+    allOpIn : state=> state.totalIn
   },
 };

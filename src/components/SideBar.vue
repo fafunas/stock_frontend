@@ -4,7 +4,7 @@
       <v-list-item>
         <v-list-item-content>
           <v-list-item-title class="text-h6"> Panel </v-list-item-title>
-          <v-list-item-subtitle> Usuario </v-list-item-subtitle>
+         
         </v-list-item-content>
       </v-list-item>
 
@@ -74,7 +74,7 @@ export default {
 
   computed:{
     userRol(){
-      if (this.$store.state.users.userRol.role === "ADMIN_ROLE"){
+      if (this.$store.state.users.userRol === "ADMIN_ROLE"){
         return true
       }else{
         return false
