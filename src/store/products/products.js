@@ -7,6 +7,9 @@ export default{
         products:[],
         types:[],
         groups:[],
+        sameStock:0,
+        lessStock:0,
+        moreStock:0
     },
 
     mutations:{

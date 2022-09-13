@@ -10,6 +10,8 @@
           cache-items
           flat
           hide-no-data
+          hide-selected
+          clearable
           hide-details
           label="Proveedor"
           solo-inverted
@@ -177,6 +179,13 @@ export default {
         observation: "",
       });
     },
+    confirmAlert() {
+      this.$store.dispatch("notifications/SET_NOTIFICATION", {
+        type: "success",
+        text: "Registro Guardado Correctamente",
+      });
+      
+    },
 
     confirmRegistration(){
         this.finalItem.nro_in= this.totalIn
@@ -195,7 +204,7 @@ export default {
             
         })
         this.$store.dispatch("wareHouse/confirmNewIn", this.finalItem)
-        console.log(this.finalItem);
+        this.confirmAlert();
         this.dialog = false;
         this.$router.go(this.$router.currentRoute)
    
