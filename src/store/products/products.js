@@ -7,9 +7,10 @@ export default{
         products:[],
         types:[],
         groups:[],
-        sameStock:0,
         lessStock:0,
-        moreStock:0
+        equalTo:0,
+        lessStockProducts:[],
+        equalToProducts:[]        
     },
 
     mutations:{
@@ -21,6 +22,12 @@ export default{
         },
         GROUPS(state,payload){
             state.groups = payload
+        },
+        LESSTHAN(state,payload){
+            state.lessStock= payload.lessTotal[0]
+            state.equalTo = payload.totalSame[0]
+            state.lessStockProducts = payload.lessthan
+            state.equalToProducts = payload.same
         }
 
     },
@@ -43,8 +50,15 @@ export default{
             axios.get(process.env.VUE_APP_SERVER_URL + 'groups',{headers: authHeader()})
             .then((data)=>{
                 context.commit("GROUPS",data.data.group[0])
-               // console.table(data.data.group[0])
-                //console.log(data.data.group[0])
+            })
+            
+        },
+        getlessProduct(context){
+            axios.get(process.env.VUE_APP_SERVER_URL + 'products/lessthan',{headers: authHeader()})
+            .then((data)=>{
+                context.commit("LESSTHAN",data.data)
+           //     console.log("esto viene del store",data.data)
+            
             })
             
         }

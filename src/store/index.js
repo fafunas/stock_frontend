@@ -8,6 +8,7 @@ import products from './products/products'
 import supplier from './supplier/supplier'
 import wareHouse from './warehouse/warehouse'
 import notifications from './notifications/notifications'
+import dialog from './notifications/dialog'
 
 Vue.use(Vuex)
 
@@ -26,7 +27,8 @@ export default new Vuex.Store({
     products,
     supplier,
     wareHouse,
-    notifications
+    notifications,
+    dialog
   },
   plugins:[
     createPersistedState({
