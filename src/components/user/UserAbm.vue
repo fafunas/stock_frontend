@@ -1,4 +1,5 @@
 <template>
+<v-main class="pa-4">
   <v-data-table
     :headers="headers"
     :items="user"
@@ -107,6 +108,7 @@
       <v-icon medium color="red" @click="deleteItem(item)"> mdi-delete </v-icon>
     </template>
   </v-data-table>
+  </v-main>
 </template>
 
 <script>

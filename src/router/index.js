@@ -26,7 +26,7 @@ const routes = [
       import(/* webpackChunkName: "Panel" */ "../views/UserABM.vue"),
     meta: { requiresAuth: true, admin: true },
     beforeEnter: (to, from, next) => {
-      if (store.state.users.userRol.role === "USER_ROLE") {
+      if (store.state.users.userRol === "USER_ROLE") {
         next("/");
       }
       next();
@@ -40,7 +40,7 @@ const routes = [
     meta: { requiresAuth: true, admin: true },
 
     beforeEnter: (to, from, next) => {
-      if (store.state.users.userRol.role === "USER_ROLE") {
+      if (store.state.users.userRol === "USER_ROLE") {
         next("/");
       }
       next();
