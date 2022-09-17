@@ -37,7 +37,7 @@ import { mapState } from "vuex";
 export default {
   data: () => ({}),
   mounted() {
-    console.log("esto viene del dialog", this.items);
+    //console.log("esto viene del dialog", this.items);
   },
 
   computed: {
