@@ -32,7 +32,7 @@
         <div>{{ date }}</div>
         <br />
 
-        <div>{{totalIn}}</div>
+        <div>Nº Ingreso: {{totalIn}}</div>
       </div>
     </div>
     <v-divider class="mb-10"></v-divider>

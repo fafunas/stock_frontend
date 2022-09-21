@@ -20,7 +20,7 @@
         <div>{{ date }}</div>
         <br />
 
-        <div>{{ totalOut }}</div>
+        <div>Nº Egreso: {{ totalOut }}</div>
       </div>
     </div>
     <v-divider class="mb-10"></v-divider>
