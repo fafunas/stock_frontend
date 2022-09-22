@@ -29,6 +29,7 @@
 <script>
 import ReportTab from "../components/reports/ReportTab.vue";
 import SideBar from "../components/SideBar.vue";
+import {mapState} from 'vuex'
 export default {
   components: { ReportTab, SideBar },
   data: () => ({
@@ -56,7 +57,7 @@ export default {
       },
     },
     secondChart: {
-      series: [44, 55, 13],
+      series: [],
       chartOptions: {
         chart: {
           width: 380,
@@ -82,6 +83,28 @@ export default {
       },
     },
   }),
+  computed:{
+    ...mapState({
+      lessStock: (state) => state.products.lessStock,
+      equalTo: (state) => state.products.equalTo,
+      greater: (state)=> state.products.greaterThan
+    })
+  },
+
+  beforeMount(){
+    this.$store.dispatch('products/getDashboardProduct')
+    this.fillSeriesChart()
+    //console.log(this.lessStock, this.equalTo, this.greater)
+    console.log(this.secondChart.series)
+  },
+
+  methods:{
+    fillSeriesChart(){
+      this.secondChart.series.push(this.greater.greater);
+      this.secondChart.series.push(this.equalTo.equalTo);
+      this.secondChart.series.push(this.lessStock.lessthan)
+    }
+  }
 };
 </script>
 

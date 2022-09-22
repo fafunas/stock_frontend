@@ -125,7 +125,6 @@ export default {
       {
         text: "Codigo",
         align: "start",
-        sortable: false,
         value: "cod",
       },
       { text: "Grupo", value: "group.cod" },
@@ -203,6 +202,7 @@ export default {
     //editar items
     editItem(item) {
       this.editedIndex = item.id;
+      this.editedItem.cod = item.cod;
       this.editedItem.group = item.group._id;
       this.editedItem.type = item.type._id;
       this.editedItem.description = item.description;
