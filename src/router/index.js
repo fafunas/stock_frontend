@@ -64,6 +64,12 @@ const routes = [
     component: () => import("../views/WarehouseOut.vue"),
     meta: { requiresAuth: true },
   },
+  {
+    path: "/warehouse/lease",
+    name: "WarehouseLease",
+    component: () => import("../views/WarehouseLease.vue"),
+    meta: { requiresAuth: true },
+  },
 ];
 
 const router = new VueRouter({
