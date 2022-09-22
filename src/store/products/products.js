@@ -9,6 +9,7 @@ export default {
     groups: [],
     lessStock: 0,
     equalTo: 0,
+    greaterThan:0,
     dialogProducts: [],
   
   },
@@ -26,6 +27,7 @@ export default {
     DASHBOARD(state, payload) {
       state.lessStock = payload.lessTotal[0];
       state.equalTo = payload.equalTo[0];
+      state.greaterThan = payload.greater[0]
     },
     SAMESTOCKPRODUCT(state, payload) {
       state.dialogProducts = payload.same;

@@ -23,7 +23,7 @@ export default {
       state.totalIn = payload
     },
     TOTALOUT(state,payload){
-      state.totalOUT = payload
+      state.totalOut = payload
     },
 
     TOTAL_NRO_IN(state,nro_in){
@@ -72,7 +72,14 @@ export default {
       axios.get(process.env.VUE_APP_SERVER_URL + "warehouse/in",{headers: authHeader()})
       .then ((data)=>{
         context.commit("TOTALIN", data.data.opIn)
-     //   console.table(data.data.opIn)
+       // console.table(data.data.opIn)
+      })
+    },
+    getAllOut(context){
+      axios.get(process.env.VUE_APP_SERVER_URL + "warehouse/out",{headers: authHeader()})
+      .then ((data)=>{
+        context.commit("TOTALOUT", data.data.opOut)
+      //  console.table(data.data.opIn)
       })
     }
   },
