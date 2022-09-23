@@ -91,7 +91,7 @@ export default {
     },
   }),
   mounted() {
-    this.$store.dispatch("wareHouse/getAllRegLease");
+    this.$store.dispatch("wareHouse/getEnableLease");
   },
   computed: {
     ...mapState({
@@ -110,7 +110,7 @@ export default {
       this.withdrawn = item.quantity;
     },
     confirmReturn() {
-      if (this.quantity > this.withdrawn) {
+      if (this.quantity > this.withdrawn || this.quantity <=0) {
         this.errorAlert();
       } else {
         this.editItem.quantity = this.quantity;

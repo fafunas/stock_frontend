@@ -41,7 +41,7 @@
       <v-tab-item
         :value="'tab-3'"
       >
-       3
+       <ReportLease/>
       </v-tab-item>
     </v-tabs-items>
   </v-card>
@@ -50,11 +50,13 @@
 <script>
 import ReportIn from './ReportIn.vue'
 import TableOut from './OutProducts.vue'
+import ReportLease from './ReportLease.vue'
   export default {
 
     components:{
       ReportIn,
-     TableOut
+     TableOut,
+     ReportLease
     },
     data () {
       return {

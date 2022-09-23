@@ -13,6 +13,7 @@ export default {
     totalIn: [],
     totalOut: [],
     totalLease:[],
+    movements:[],
   },
 
   mutations: {
@@ -44,6 +45,11 @@ export default {
     TOTAL_NRO_OUT(state, nro_out) {
       state.nro_out = nro_out;
     },
+    MOVEMENTS(state,payload){
+      state.nro_in = payload.totalIn[0]
+      state.nro_lease = payload.totalLease[0]
+      state.nro_out = payload.totalOut[0]
+    }
   },
   actions: {
     confirmNewIn(context, payload) {
@@ -111,7 +117,7 @@ export default {
         });
     },
 
-    getAllRegLease(context) {
+    getEnableLease(context) {
       axios
         .get(process.env.VUE_APP_SERVER_URL + "warehouse/lease", {
           headers: authHeader(),
@@ -119,6 +125,16 @@ export default {
         .then((data) => {
           context.commit("TOTALLEASE", data.data.opLease);
         //  console.log("store",data.data)
+        });
+    },
+    getAllRegLeases(context) {
+      axios
+        .get(process.env.VUE_APP_SERVER_URL + "warehouse/lease/all", {
+          headers: authHeader(),
+        })
+        .then((data) => {
+          context.commit("TOTALLEASE", data.data.allLease[0]);
+         // console.log("store",data.data.allLease)
         });
     },
 
@@ -140,6 +156,16 @@ export default {
         .then((data) => {
           context.commit("TOTALOUT", data.data.opOut);
           //  console.table(data.data.opIn)
+        });
+    },
+    getAllMovements(context) {
+      axios
+        .get(process.env.VUE_APP_SERVER_URL + "products/dashboard/movements", {
+          headers: authHeader(),
+        })
+        .then((data) => {
+          context.commit("MOVEMENTS", data.data);
+          console.log(data.data)
         });
     },
   },
