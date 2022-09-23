@@ -117,7 +117,8 @@ export default {
           headers: authHeader(),
         })
         .then((data) => {
-          context.commit("REGISTERLEASE", data.data.opLease);
+          context.commit("TOTALLEASE", data.data.opLease);
+        //  console.log("store",data.data)
         });
     },
 

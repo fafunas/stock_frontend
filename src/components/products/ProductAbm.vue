@@ -3,7 +3,6 @@
   <v-data-table
     :headers="headers"
     :items="products"
-    sort-by="calories"
     class="elevation-1"
   >
     <template v-slot:top>

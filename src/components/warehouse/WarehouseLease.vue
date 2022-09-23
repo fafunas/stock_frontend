@@ -142,7 +142,7 @@ export default {
     menu: false,
     modal: false,
     menu2: false,
-    finalItem:{}
+    finalItem: {},
   }),
 
   mounted() {
@@ -154,12 +154,11 @@ export default {
 
   methods: {
     checkStock() {
-    if(this.quantity > this.product_id.stock){
-        return false
-    }else{
-        return true
-    }
-     
+      if (this.quantity > this.product_id.stock) {
+        return false;
+      } else {
+        return true;
+      }
     },
     confirmAlert() {
       this.$store.dispatch("notifications/SET_NOTIFICATION", {
@@ -174,26 +173,24 @@ export default {
       });
     },
 
-    confirmRegistration(){
-        if(!this.checkStock()){
-            this.finalItem.lenght = 0
-            this.errorAlert();
-        }else{
-            this.finalItem.nro_lease= this.totalLease;
-            this.finalItem.product = this.product_id.id;
-            this.finalItem.quantity = this.quantity;
-            this.finalItem.observation = this.observation;
-            this.finalItem.user = this.user;
-            this.finalItem.return_date = this.return_date
-            this.$store.dispatch('wareHouse/confirmNewLease', this.finalItem)
-            this.dialog = false;
-            this.confirmAlert();
-           this.$router.go(this.$router.currentRoute)
-            console.log(this.finalItem)
-         }
-    
+    confirmRegistration() {
+      if (!this.checkStock()) {
+        this.finalItem.lenght = 0;
+        this.errorAlert();
+      } else {
+        this.finalItem.nro_lease = this.totalLease;
+        this.finalItem.product = this.product_id.id;
+        this.finalItem.quantity = this.quantity;
+        this.finalItem.observation = this.observation;
+        this.finalItem.user = this.user;
+        this.finalItem.return_date = this.return_date;
+        this.$store.dispatch("wareHouse/confirmNewLease", this.finalItem);
+        this.dialog = false;
+        this.confirmAlert();
+        this.$router.go(this.$router.currentRoute);
+        console.log(this.finalItem);
       }
-   
+    },
   },
 
   computed: {
