@@ -1,6 +1,17 @@
 <template>
   <v-main>
+    <v-card>
+    <v-card-title>
+      <v-text-field
+        v-model="search"
+        append-icon="mdi-magnify"
+        label="Buscar"
+        single-line
+        hide-details
+      ></v-text-field>
+    </v-card-title>
     <v-data-table
+      :search="search"
       :headers="headers"
       :items="allLease"
       :items-per-page="5"
@@ -58,6 +69,7 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    </v-card>
   </v-main>
 </template>
 
@@ -68,6 +80,7 @@ import moment from "moment";
 import axios from 'axios';
 export default {
   data: () => ({
+    search:'',
     dialog: false,
     dialogDisable: false,
     headers: [
