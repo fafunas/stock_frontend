@@ -34,7 +34,7 @@ export default {
   components: { ReportTab, SideBar },
   data: () => ({
     firstChart: {
-      series: [44, 55, 13],
+      series: [],
       chartOptions: {
         chart: {
           width: 380,
@@ -87,19 +87,24 @@ export default {
     ...mapState({
       lessStock: (state) => state.products.lessStock,
       equalTo: (state) => state.products.equalTo,
-      greater: (state)=> state.products.greaterThan
+      greater: (state)=> state.products.greaterThan,
+      nro_in:(state)=> state.wareHouse.nro_in,
+      nro_out:(state)=> state.wareHouse.nro_out,
+      nro_lease:(state)=> state.wareHouse.nro_lease,
     })
   },
 
   beforeMount(){
     this.$store.dispatch('products/getDashboardProduct')
+    this.$store.dispatch('wareHouse/getAllMovements')
     this.fillSeriesChart()
-    //console.log(this.lessStock, this.equalTo, this.greater)
-    console.log(this.secondChart.series)
-  },
+   },
 
   methods:{
     fillSeriesChart(){
+      this.firstChart.series.push(this.nro_in);
+      this.firstChart.series.push(this.nro_out);
+      this.firstChart.series.push(this.nro_lease);
       this.secondChart.series.push(this.greater.greater);
       this.secondChart.series.push(this.equalTo.equalTo);
       this.secondChart.series.push(this.lessStock.lessthan)

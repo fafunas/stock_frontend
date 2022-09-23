@@ -1,6 +1,17 @@
 <template>
   <v-main>
+    <v-card>
+    <v-card-title>
+      <v-text-field
+        v-model="search"
+        append-icon="mdi-magnify"
+        label="Buscar"
+        single-line
+        hide-details
+      ></v-text-field>
+    </v-card-title>
     <v-data-table
+      :search="search"
       :headers="headers"
       :items="allLease"
       :items-per-page="5"
@@ -58,6 +69,7 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    </v-card>
   </v-main>
 </template>
 
@@ -68,6 +80,7 @@ import moment from "moment";
 import axios from 'axios';
 export default {
   data: () => ({
+    search:'',
     dialog: false,
     dialogDisable: false,
     headers: [
@@ -91,7 +104,7 @@ export default {
     },
   }),
   mounted() {
-    this.$store.dispatch("wareHouse/getAllRegLease");
+    this.$store.dispatch("wareHouse/getEnableLease");
   },
   computed: {
     ...mapState({
@@ -110,7 +123,7 @@ export default {
       this.withdrawn = item.quantity;
     },
     confirmReturn() {
-      if (this.quantity > this.withdrawn) {
+      if (this.quantity > this.withdrawn || this.quantity <=0) {
         this.errorAlert();
       } else {
         this.editItem.quantity = this.quantity;
