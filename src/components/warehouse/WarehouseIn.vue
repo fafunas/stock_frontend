@@ -77,7 +77,7 @@
             ></v-text-field>
           </td>
           <td>
-            <v-text-field v-model="item.nro_rq" type="Number"></v-text-field>
+            <v-text-field v-model="item.nro_rq" type="Number" required :rules="refeRule"></v-text-field>
           </td>
           <td>
             <v-text-field v-model="item.observation"></v-text-field>
@@ -188,6 +188,12 @@ export default {
     },
 
     confirmRegistration(){
+      if(!this.referral || !this.supplier || this.nro_in){
+        this.$store.dispatch("notifications/SET_NOTIFICATION", {
+        type: "warning",
+        text: "Faltan Campos Obligatorios",
+      });
+      }else{
         this.finalItem.nro_in= this.totalIn
         this.finalItem.supplier = this.supplier
         this.finalItem.referral = this.referral
@@ -207,6 +213,9 @@ export default {
         this.confirmAlert();
         this.dialog = false;
         this.$router.go(this.$router.currentRoute)
+
+      }
+        
    
     }
   },

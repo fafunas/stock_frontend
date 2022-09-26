@@ -165,7 +165,7 @@ export default {
         })
         .then((data) => {
           context.commit("MOVEMENTS", data.data);
-          console.log(data.data)
+        //  console.log(data.data)
         });
     },
   },

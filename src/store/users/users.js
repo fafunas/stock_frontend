@@ -59,7 +59,7 @@ export default{
             .then((data)=>{
                 context.commit("USERROL",data.data)
                 
-                console.log(data.data)
+                //console.log(data.data)
             })
 
         }

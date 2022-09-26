@@ -93,6 +93,7 @@ export default {
       nro_lease:(state)=> state.wareHouse.nro_lease,
     })
   },
+ 
 
   beforeMount(){
     this.$store.dispatch('products/getDashboardProduct')
