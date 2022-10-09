@@ -7,35 +7,34 @@
       item-key="nro_in"
     >
       <template v-slot:expanded-item="{ item }">
-                <table class="table">
-            <thead>
-                <tr>
-                    <th class="text-left">Producto</th>
-                    <th class="text-left">Cantidad</th>
-                    <th class="text-left">RQ</th>
-                    <th class="text-left">Observacion</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="i in item.items" :key="i._id">
-                    <td class="table-td">{{i.product.description}}</td>
-                    <td class="table-td">{{i.quantity}}</td>
-                    <td class="table-td">{{i.nro_rq}}</td>
-                    <td class="table-td">{{i.observation}}</td>
-                </tr>
-            </tbody>
+        <table class="table">
+          <thead>
+            <tr>
+              <th class="text-left">Producto</th>
+              <th class="text-left">Cantidad</th>
+              <th class="text-left">RQ</th>
+              <th class="text-left">Observacion</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="i in item.items" :key="i._id">
+              <td class="table-td">{{ i.product.description }}</td>
+              <td class="table-td text-center">{{ i.quantity }}</td>
+              <td class="table-td text-center">{{ i.nro_rq }}</td>
+              <td class="table-td text-center">{{ i.observation }}</td>
+            </tr>
+          </tbody>
         </table>
       </template>
-      <template v-slot:[`item.createdAt`]="{item}">
-         {{momentDate(item.createdAt)}}
-
+      <template v-slot:[`item.createdAt`]="{ item }">
+        {{ momentDate(item.createdAt) }}
       </template>
     </v-data-table>
   </v-card>
 </template>
 
 <script>
-import moment from 'moment'
+import moment from "moment";
 import { mapState } from "vuex";
 export default {
   data: () => ({
@@ -61,7 +60,7 @@ export default {
         text: "Usuario",
         value: "user.name",
       },
-      { text: '', value: 'data-table-expand' },
+      { text: "", value: "data-table-expand" },
     ],
   }),
   computed: {
@@ -70,10 +69,10 @@ export default {
     }),
   },
 
-  methods:{
-    momentDate(date){
-        return moment(date).format('DD/MM/YYYY hh:mm a')
-    }
+  methods: {
+    momentDate(date) {
+      return moment(date).format("DD/MM/YYYY hh:mm a");
+    },
   },
 
   mounted() {
@@ -88,6 +87,10 @@ export default {
 }
 
 .table {
-  width: 500px;
+  width: auto
+}
+
+.table tr th {
+  padding: 0px 5px;
 }
 </style>
